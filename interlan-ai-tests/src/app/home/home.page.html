@@ -3,6 +3,7 @@
     <ion-title>
       Interlan AI test
     </ion-title>
+    <ion-progress-bar *ngIf="waitingForResponse" type="indeterminate"></ion-progress-bar>
   </ion-toolbar>
 </ion-header>
 
@@ -19,7 +20,28 @@
       <ion-textarea [(ngModel)]="ngModelPrompt" rows="10"></ion-textarea>
     </ion-card>
 
-    <ion-button>Send request</ion-button>
+    <ion-item>
+      <ion-select [(ngModel)]="ngModelOperation" label="Operation" >
+        <ion-select-option value="CREATE">CREATE</ion-select-option>
+        <ion-select-option value="ADD">ADD</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <hr>
+    <strong>{{descriptions[ngModelOperation]}}</strong>
+    <p>{{'example: ' + examples[ngModelOperation]}}</p>
+    <hr>
+
+    <ion-button (click)="sendPrompt()">Send request</ion-button>
+    <ion-button (click)="log()">log</ion-button>
+
+    <ion-grid [fixed]="true">
+      <ion-row *ngFor="let row of rows">
+        <ion-col *ngFor="let pro of columnNames">
+          {{row[pro]}}
+        </ion-col>
+      </ion-row>
+    </ion-grid>
 
   </div>
 </ion-content>
