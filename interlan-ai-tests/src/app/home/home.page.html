@@ -22,8 +22,8 @@
 
     <ion-item>
       <ion-select [(ngModel)]="ngModelOperation" label="Operation" >
-        <ion-select-option value="CREATE">CREATE</ion-select-option>
-        <ion-select-option value="ADD">ADD</ion-select-option>
+        <ion-select-option [value]="Operations.CreateGrid">CREATE</ion-select-option>
+        <ion-select-option [value]="Operations.GridAdd">ADD</ion-select-option>
       </ion-select>
     </ion-item>
 
