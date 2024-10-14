@@ -37,14 +37,11 @@ export class HomePage {
   constructor(private http: HttpClient) {}
 
   getPromptBeginning() {
-    const b =
-      "Create a json object. Use '```json' at the begging of json and '```' at the end.";
-
     if (
       this.ngModelOperation == Operations.CreateGrid ||
       this.ngModelOperation == Operations.GridAdd
     ) {
-      return `${b}. Set 'operation' key to '${this.ngModelOperation}'. `;
+      return `Create json. Set 'operation' key to '${this.ngModelOperation}'. `;
     } else {
       throw new Error('Unknown operation');
     }
@@ -60,26 +57,20 @@ export class HomePage {
     this.http
       .post(environment.llamaCppBackendIp, {
         prompt: `${this.getPromptBeginning()}${this.ngModelPrompt}`,
-        n_predict: 128,
       })
       .subscribe((data: any) => {
         const b = data['content'] as string;
-
-        const begin = b.indexOf('```json') + '```json'.length;
-        const end = b.indexOf('```', begin + 1);
+        console.log('WHOLE RESPONSE: ', b);
 
         try {
-          const json = JSON.parse(b.slice(begin, end));
+          const json = JSON.parse(b);
           console.log(json);
           this.handleOperation(json);
         } catch {
           console.error('Failed to parse JSON');
           console.log('RETURNED DATA', b);
         }
-
         this.waitingForResponse = false;
-
-        // this.rows.push(JSON.parse(b.slice(begin, end)));
       });
   }
 
